@@ -1870,6 +1870,22 @@ define Device/iptime_a3004t
 endef
 TARGET_DEVICES += iptime_a3004t
 
+define Build/iptime-a3008-fixup
+	python3 $(CURDIR)/iptime-util/a3008-fixup.py $@
+endef
+
+define Device/iptime_a3008-mu
+  $(Device/dsa-migration)
+  IMAGE_SIZE := 7936k
+  UIMAGE_NAME := a3008
+  DEVICE_VENDOR := ipTIME
+  DEVICE_MODEL := A3008-MU
+  DEVICE_PACKAGES := kmod-mt7615-firmware kmod-mt7615e -ppp -ppp-mod-pppoe -uboot-envtools
+  KERNEL_INITRAMFS := $(KERNEL_DTB) | uImage lzma | iptime-a3008-fixup
+  KERNEL := $(KERNEL_DTB) | uImage lzma | iptime-a3008-fixup
+endef
+TARGET_DEVICES += iptime_a3008-mu
+
 define Device/iptime_a6004ns-m
   $(Device/dsa-migration)
   IMAGE_SIZE := 16128k
